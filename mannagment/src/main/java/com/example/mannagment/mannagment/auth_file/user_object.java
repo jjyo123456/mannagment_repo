@@ -10,6 +10,7 @@ public class user_object {
     private String name;
     private String email;
     private String password;
+    private String phone;
     private String address;
     private String role;
 
@@ -65,5 +66,13 @@ public class user_object {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
