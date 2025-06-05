@@ -1,8 +1,8 @@
-package com.example.mannagment.mannagment.auth_file;
+package main.java.com.example.mannagment.mannagment.auth_file;
 
-public class ErrorException extends RuntimeException {
+public class error_class extends RuntimeException {
 
-public ErrorException(String message) {
+public error_class(String message) {
     super(message);
 }
 }

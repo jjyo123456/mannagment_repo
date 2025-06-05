@@ -1,4 +1,4 @@
-package com.example.mannagment.mannagment.auth_file;
+package main.java.com.example.mannagment.mannagment.auth_file;
 
 public class Erroe_response_object {
     public String status;
