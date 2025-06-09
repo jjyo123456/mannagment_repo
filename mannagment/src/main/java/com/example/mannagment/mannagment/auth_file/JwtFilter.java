@@ -3,8 +3,12 @@ package main.java.com.example.mannagment.mannagment.auth_file;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,7 +36,14 @@ public class JwtFilter extends OncePerRequestFilter{
         
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userdetails = userDetailsService.loadUserByUsername(username);
+
+            if(Jwtutil.validatetoken(jwt, userdetails)){
+                UsernamePasswordAuthenticationToken authtoken = new UsernamePasswordAuthenticationToken(userdetails,null,userdetails.getAuthorities());
+                authtoken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authtoken); 
+            }
         }
     }
+    filterChain.doFilter(request, response );
     }
 }
