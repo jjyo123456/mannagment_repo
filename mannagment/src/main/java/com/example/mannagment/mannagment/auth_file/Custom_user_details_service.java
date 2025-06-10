@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class Custom_user_details_service implements UserDetailsService{
     @Autowired
     Auth_repository auth_repository;
-    
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

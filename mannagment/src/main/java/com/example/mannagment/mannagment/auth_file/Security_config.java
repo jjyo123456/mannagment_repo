@@ -1,12 +1,14 @@
-package main.java.com.example.mannagment.mannagment.auth_file;
+package com.example.mannagment.mannagment.auth_file;
 
 
 
 
-import org.apache.tomcat.util.http.parser.HttpParser;
+// import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,6 +36,14 @@ public SecurityFilterChain securityfilterchain(HttpSecurity http) throws Excepti
     http.addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class);
 
    return http.build();
+}
+
+@Bean 
+
+public AuthenticationProvider authenticationProvider(){
+    DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+    daoAuthenticationProvider.setUserDetailsService(userdetailsservice);
+    return daoAuthenticationProvider;
 }
     
 }
