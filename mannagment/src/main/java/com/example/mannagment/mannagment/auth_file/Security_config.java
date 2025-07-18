@@ -29,7 +29,7 @@ public UserDetailsService userdetailsservice;
 
 @Bean
 public SecurityFilterChain securityfilterchain(HttpSecurity http) throws Exception{
-    http.csrf().disable()
+    http.csrf(customizer -> customizer.disable())
     .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/signup", "/auth/login/{name}").permitAll().anyRequest().authenticated())
     .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
