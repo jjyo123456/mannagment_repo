@@ -3,6 +3,8 @@ package com.example.mannagment.mannagment.sos_file.ambulance_details;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "hospital_data")
@@ -17,6 +19,9 @@ public class Hospital_data_class {
 
     @Column(name = "address", length = 50)
     private String address;
+
+    @OneToMany(mappedBy = "Ambulance_data_class" , cascade = CascadeType.ALL , orphanRemoval = true)
+    List<Ambulance_data_class> ambulance = new ArrayList<>();
 
     @Column(name = "latitude", precision = 10, scale = 6)
     private Double latitude;

@@ -1,6 +1,8 @@
 package com.example.mannagment.mannagment.sos_file.ambulance_details;
 
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.Cascade;
+import org.hibernate.sql.results.graph.Fetch;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -14,7 +16,8 @@ public class Ambulance_data_class {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String ambulance_id;
 
-    @ManyToOne( , CascadeType.ALL , FetchType.LAZY , true)
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @JoinColumn(name = "Hospital" , nullable = false )
     private int hospital_id;
 
     private String number_plate;
