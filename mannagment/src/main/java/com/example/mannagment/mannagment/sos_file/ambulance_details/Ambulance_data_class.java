@@ -18,7 +18,7 @@ public class Ambulance_data_class {
 
     @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "Hospital" , nullable = false )
-    private int hospital_id;
+    private Long hospital_id;
 
     private String number_plate;
     private Enum<ambulance_enum> status;
@@ -33,18 +33,18 @@ public class Ambulance_data_class {
 
 
 
-    public Ambulance_data_class(String ambulance_id, int hospital_id, String number_plate, Enum<ambulance_enum> status, String driver_name, int driver_contact, Double latitude, Double longitude, Timestamp last_location_updated_time) {
-        this.ambulance_id = ambulance_id;
-        this.hospital_id = hospital_id;
-        this.number_plate = number_plate;
-        this.status = status;
-        this.driver_name = driver_name;
-        this.driver_contact = driver_contact;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.last_location_updated_time = last_location_updated_time;
-    }
-
+   // public Ambulance_data_class(String ambulance_id, int hospital_id, String number_plate, Enum<ambulance_enum> status, String driver_name, int driver_contact, Double latitude, Double longitude, Timestamp last_location_updated_time) {
+   //     this.ambulance_id = ambulance_id;
+   //     this.hospital_id = hospital_id;
+   //     this.number_plate = number_plate;
+   //     this.status = status;
+   //     this.driver_name = driver_name;
+   //     this.driver_contact = driver_contact;
+   //     this.latitude = latitude;
+    //    this.longitude = longitude;
+    //    this.last_location_updated_time = last_location_updated_time;
+ //   }
+//
 
 
 
@@ -58,11 +58,11 @@ public class Ambulance_data_class {
         this.ambulance_id = ambulance_id;
     }
 
-    public int getHospital_id() {
+    public Long getHospital_id() {
         return hospital_id;
     }
 
-    public void setHospital_id(int hospital_id) {
+    public void setHospital_id(Long hospital_id) {
         this.hospital_id = hospital_id;
     }
 

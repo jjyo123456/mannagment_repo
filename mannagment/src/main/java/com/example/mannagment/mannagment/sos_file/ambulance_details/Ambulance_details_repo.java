@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Ambulance_details_repo extends JpaRepository<Ambulance_data_class , String> {
+public interface Ambulance_details_repo extends JpaRepository<Ambulance_request_dto , String> {
 }
