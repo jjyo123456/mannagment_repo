@@ -17,11 +17,14 @@ public class Ambulance_details_service {
         this.mapper = mapper;
     }
 
-    private Ambulance_request_dto add_ambulance_data(Ambulance_data_class entity){
-        Ambulance_request_dto dto_object = new Ambulance_request_dto();
-        dto_object = mapper.toDto(entity);
-        ambulanceDetailsRepo.save(dto_object);
-        return
+    private Ambulance_data_class add_ambulance_data(Ambulance_data_class data){
+        ambulanceDetailsRepo.save(data);
+        return data;
     }
+    private Ambulance_data_class update_ambulance_data(Ambulance_data_class updated_dataa){
+        ambulanceDetailsRepo.save(updated_dataa);
+        return updated_dataa;
+    }
+
 
 }
