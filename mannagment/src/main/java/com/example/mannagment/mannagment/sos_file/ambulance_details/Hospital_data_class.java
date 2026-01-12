@@ -1,7 +1,10 @@
 package com.example.mannagment.mannagment.sos_file.ambulance_details;
 
 
+import com.example.mannagment.mannagment.main_file.doctor_db.Doctor_info;
 import jakarta.persistence.*;
+import org.hibernate.engine.spi.CascadeStyle;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,10 @@ public class Hospital_data_class {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "Doctor_info" , cascade = {CascadeType.MERGE , CascadeType.PERSIST , CascadeType.REMOVE , CascadeType.REFRESH} , orphanRemoval = true)
+    @JoinColumn
+    private ArrayList<Doctor_info> hospital_doctor_infos;
 
 
     public Hospital_data_class() {}

@@ -1,78 +1,81 @@
 package com.example.mannagment.mannagment.auth_file;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
+@Table(name = "user_object")
 public class user_object {
+
     @Id
-    private String id;
+    @GeneratedValue
+    private UUID id;
+
     private String name;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String password;
     private String phone;
     private String address;
-    private String role;
 
-    // Getter and Setter for id
-    public String getId() {
-        return id;
+    // Store roles as a separate collection table
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>();
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    // Constructor
+    public user_object() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
-    // Getter and Setter for name
-    public String getName() {
-        return name;
-    }
+    // Getters and Setters
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    // Getter and Setter for email
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    // Getter and Setter for password
-    public String getPassword() {
-        return password;
-    }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
-    // Getter and Setter for address
-    public String getAddress() {
-        return address;
-    }
+    public Set<Role> getRoles() { return roles; }
+    public void setRoles(Set<Role> roles) { this.roles = roles; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    // Getter and Setter for role
-    public String getRole() {
-        return role;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    // Enum for roles
+    public enum Role {
+        PATIENT,
+        DOCTOR,
+        ADMIN
     }
 }

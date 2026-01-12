@@ -9,56 +9,58 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class Auuth_controller {
-    Auth_repository repository;
+
+    private final UserObjectService userObjectService;
+    private final Jwt_utill jwtUtill;
+    private final Custom_user_details_service userDetailsService;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public Auuth_controller(Auth_repository repository) {
-        this.repository = repository;
+    public Auuth_controller(UserObjectService userObjectService,
+                          Jwt_utill jwtUtill,
+                          Custom_user_details_service userDetailsService,
+                          AuthenticationManager authenticationManager) {
+        this.userObjectService = userObjectService;
+        this.jwtUtill = jwtUtill;
+        this.userDetailsService = userDetailsService;
+        this.authenticationManager = authenticationManager;
     }
 
-    @Autowired
-    public Jwt_utill jwt_utill;
-
-    @Autowired
-    public Custom_user_details_service userdetailsservice;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
+    // ✅ Exception handler
     @ExceptionHandler(ErrorException.class)
-    public ResponseEntity<Erroe_response_object> exceptionhandler(ErrorException error) {
-        Erroe_response_object error_response_object = new Erroe_response_object();
-        error_response_object.setMessage(error.getMessage());
-        error_response_object.setStatus("hehehehehe");
-        error_response_object.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        return new ResponseEntity<>(error_response_object, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Erroe_response_object> handleException(ErrorException error) {
+        Erroe_response_object response = new Erroe_response_object();
+        response.setMessage(error.getMessage());
+        response.setStatus("ERROR");
+        response.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    // ✅ Signup endpoint — automatically links Patient/Doctor based on roles
     @PostMapping("/signup")
-    public void sign_up(@RequestBody user_object new_userr) {
-        this.repository.save(new_userr);
+    public ResponseEntity<user_object> signUp(@RequestBody user_object newUser) {
+        user_object savedUser = userObjectService.registerUser(newUser);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
+    // ✅ Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+        // Authenticate user
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
 
-        final UserDetails userDetails = userdetailsservice.loadUserByUsername(authRequest.getUsername());
-        final String jwt = jwt_utill.genneratetoken(userDetails);
+        // Load user details
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
 
-
+        // Generate JWT
+        final String jwt = jwtUtill.genneratetoken(userDetails);
 
         return ResponseEntity.ok(new AuthResponse(jwt));
     }

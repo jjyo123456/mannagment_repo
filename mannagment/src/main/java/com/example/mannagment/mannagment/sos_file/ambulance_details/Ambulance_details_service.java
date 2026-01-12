@@ -19,11 +19,11 @@ public class Ambulance_details_service {
         this.mapper = mapper;
     }
 
-    Ambulance_data_class add_ambulance_data(Ambulance_data_class data){
+    public Ambulance_data_class add_ambulance_data(Ambulance_data_class data){
         ambulanceDetailsRepo.save(data);
         return data;
     }
-    Ambulance_data_class update_ambulance_data(Ambulance_data_class updated_dataa){
+    public Ambulance_data_class update_ambulance_data(Ambulance_data_class updated_dataa){
         ambulanceDetailsRepo.save(updated_dataa);
         return updated_dataa;
     }
@@ -49,7 +49,7 @@ public class Ambulance_details_service {
         return a;
     }
 
-    Ambulance_data_class findNearestAvailableAmbulance(double lat, double lon){
+   public Ambulance_data_class findNearestAvailableAmbulance(double lat, double lon){
         List<Ambulance_data_class> list = ambulanceDetailsRepo.findAllBystatus(ambulance_enum.available);
 
         Ambulance_data_class nearest = null;
@@ -65,6 +65,9 @@ public class Ambulance_details_service {
         return nearest;
     }
 
+    public Hospital_data_class findHospitalByAmbulanceId(String ambulanceId) {
+        return ambulanceDetailsRepo.findhospitalbyambulance(ambulanceId);
+    }
 
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
@@ -76,4 +79,6 @@ public class Ambulance_details_service {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
     }
+
+
 }

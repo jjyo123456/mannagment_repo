@@ -18,7 +18,7 @@ public class Ambulance_data_class {
 
     @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "Hospital" , nullable = false )
-    private Long hospital_id;
+    private Hospital_data_class hospital_id;
 
     private String number_plate;
     private Enum<ambulance_enum> status;
@@ -58,11 +58,11 @@ public class Ambulance_data_class {
         this.ambulance_id = ambulance_id;
     }
 
-    public Long getHospital_id() {
+    public Hospital_data_class getHospital_id() {
         return hospital_id;
     }
 
-    public void setHospital_id(Long hospital_id) {
+    public void setHospital_id(Hospital_data_class hospital_id) {
         this.hospital_id = hospital_id;
     }
 

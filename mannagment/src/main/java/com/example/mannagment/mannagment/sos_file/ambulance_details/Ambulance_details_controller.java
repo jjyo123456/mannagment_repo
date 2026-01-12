@@ -69,4 +69,12 @@ public class Ambulance_details_controller {
         Ambulance_data_class nearest = ambulanceService.findNearestAvailableAmbulance(lat, lon);
         return (nearest != null) ? ResponseEntity.ok(nearest) : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/by-ambulance/{ambulanceId}")
+    public ResponseEntity<Hospital_data_class> getHospitalByAmbulanceId(@PathVariable String ambulanceId) {
+        Hospital_data_class hospital = ambulanceService.findHospitalByAmbulanceId(ambulanceId);
+        return hospital != null ? ResponseEntity.ok(hospital) : ResponseEntity.notFound().build();
+    }
+
+
 }
